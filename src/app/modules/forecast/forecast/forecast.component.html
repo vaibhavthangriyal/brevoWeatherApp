@@ -1,0 +1,3 @@
+<select name="city-drop-down" id="city-drop-down" [(ngModel)]="selectedCity" ([ngModelChange])="getForCast()">
+  <option value="" *ngFor="let city of allCities; let i = index;">{{city.nm}}</option>
+</select>
