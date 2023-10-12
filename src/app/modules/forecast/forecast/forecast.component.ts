@@ -27,7 +27,7 @@ export class ForecastComponent implements OnInit {
   showLoader: boolean = true;
   selectedCity: any;
 
-  constructor(private cityService: CityService, private forecastService: ForecastService) {}
+  constructor(private cityService: CityService, private forecastService: ForecastService) { }
 
   ngOnInit(): void {
     this.getAllCities();
@@ -48,7 +48,7 @@ export class ForecastComponent implements OnInit {
           this.fetchData();
         }
       });
-    } catch (error) {}
+    } catch (error) { }
   }
 
   async getForCast() {
@@ -67,9 +67,12 @@ export class ForecastComponent implements OnInit {
         const newDate = new Date(element.dt * 1000).getDate();
         const diff = newDate - currentDate;
         if (newArray[diff - 1]) {
+          let max = (newArray[diff - 1] > element.main.temp_max) ? element.main.temp_max : newArray[diff - 1].max;
+          let min = (newArray[diff - 1].min > element.main.temp_min) ? newArray[diff - 1].min : element.main.temp_min;
+          console.log("MAX", max, min)
           newArray[diff - 1] = {
-            max: newArray[diff - 1].max + element.main.temp_max,
-            min: newArray[diff - 1].min + element.main.temp_min,
+            max: (newArray[diff - 1].max < element.main.temp_max) ? element.main.temp_max : newArray[diff - 1].max,
+            min: (newArray[diff - 1].min > element.main.temp_min) ? element.main.temp_min : newArray[diff - 1].min,
             date: new Date(element.dt * 1000),
             weather: element.weather[0].id,
             className: `wi wi-icon-${element.weather[0].id}`,
