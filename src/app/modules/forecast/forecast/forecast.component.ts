@@ -14,19 +14,20 @@ import { ForecastService } from 'src/app/services/forecast.service';
 export class ForecastComponent implements OnInit {
   @HostListener('window:scroll', [])
   onScroll(): void {
+    // Check if the user has scrolled to the bottom of the page
     if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
-      this.getAllCities();
+      this.getAllCities(); // If yes, load more city data
     }
   }
 
-  allCities: City[] = [];
-  currentPage = 1;
-  currentCondition: any;
-  foreCastData: any = [];
-  foreCastDays: number = 3;
-  pageSize = 50;
-  showLoader: boolean = true;
-  selectedCity: any;
+  allCities: City[] = []; // Initialize an array to store city data
+  currentPage = 1; // Initialize the current page for pagination
+  currentCondition: any; // Initialize the current weather condition
+  foreCastData: any = []; // Initialize an array to store forecast data
+  foreCastDays: number = 3; // Define the number of forecast days
+  pageSize = 50; // Define the number of cities to fetch per page
+  showLoader: boolean = true; // A flag to show a loader while data is being fetched
+  selectedCity: any; // Initialize the selected city
 
   constructor(private customToastService: CustomToastService, private cityService: CityService, private forecastService: ForecastService) {}
 
@@ -36,15 +37,19 @@ export class ForecastComponent implements OnInit {
 
   getAllCities() {
     try {
+      // Fetch a batch of city data from the service
       this.cityService.getAllCities(this.currentPage, this.pageSize).subscribe((res) => {
-        this.allCities = [...this.allCities, ...res]; // Append new data to existing data
+        // Append the new data to the existing city data
+        this.allCities = [...this.allCities, ...res];
         this.currentPage++;
+        // If no city is selected, set the first city as the selected one and fetch its data
         if (!this.selectedCity) {
           this.selectedCity = this.allCities[0];
           this.fetchData();
         }
       });
     } catch (error) {
+      // Handle and display an error if fetching data fails
       this.customToastService.openToast('error', 'something went wrong');
       throw error;
     }
@@ -52,9 +57,11 @@ export class ForecastComponent implements OnInit {
 
   async changeCity(city: City) {
     try {
+      // Change the selected city and fetch its data
       this.selectedCity = city;
       this.foreCastData = await this.getForeCast();
     } catch (error) {
+      // Handle and display an error if fetching data fails
       this.customToastService.openToast('error', 'something went wrong');
       throw error;
     }
@@ -62,21 +69,21 @@ export class ForecastComponent implements OnInit {
 
   async getForeCast() {
     try {
+      // Fetch the forecast data for the selected city
       const allForecast = await this.forecastService.getForecastTillDate(this.selectedCity.lat, this.selectedCity.lon).toPromise();
 
-      const lastElemet = allForecast.list[allForecast.list.length - 1];
-      const firstDate = new Date().getDate() + 1;
-      const lastDate = new Date(lastElemet.dt * 1000).getDate();
+      const lastElemet = allForecast.list[allForecast.list.length - 1]; //Get last date from fetched data
+      const firstDate = moment().add(1, 'day'); //
+      const lastDate = moment(lastElemet.dt * 1000);
 
-      const newArray = new Array(lastDate - firstDate + 1);
+      const newArray = new Array(lastDate.diff(firstDate, 'days') + 1);
       for (let index = 0; index < allForecast.list.length; index++) {
         const element = allForecast.list[index];
-        const currentDate = new Date().getDate();
-        const newDate = new Date(element.dt * 1000).getDate();
-        const diff = newDate - currentDate;
+        const currentDate = moment();
+        const newDate = moment(element.dt * 1000);
+
+        const diff = newDate.diff(currentDate, 'days');
         if (newArray[diff - 1]) {
-          let max = newArray[diff - 1] > element.main.temp_max ? element.main.temp_max : newArray[diff - 1].max;
-          let min = newArray[diff - 1].min > element.main.temp_min ? newArray[diff - 1].min : element.main.temp_min;
           newArray[diff - 1] = {
             max: newArray[diff - 1].max < element.main.temp_max ? element.main.temp_max : newArray[diff - 1].max,
             min: newArray[diff - 1].min > element.main.temp_min ? element.main.temp_min : newArray[diff - 1].min,
@@ -99,6 +106,7 @@ export class ForecastComponent implements OnInit {
         }
       }
       return newArray;
+      // Return the calculated forecast data
     } catch (error) {
       throw error;
     }
@@ -121,29 +129,8 @@ export class ForecastComponent implements OnInit {
       this.foreCastData = await this.getForeCast();
       this.showLoader = false;
     } catch (error) {
-      this.customToastService.openToast('error','something went wrong');
+      this.customToastService.openToast('error', 'something went wrong');
       throw error;
     }
   }
-
-  // pairAndCalculateAverages(data: any) {
-  //   const groupedData = [];
-  //   for (let i = 0; i < data.length; i += 8) {
-  //     const group = data.slice(i, i + 8);
-
-  //     // Calculate average temp_max and temp_min for the group
-  //     const averageTempMax =
-  //       group.reduce((sum: number, item: any) => sum + item.main.temp_max, 0) /
-  //       group.length;
-  //     const averageTempMin =
-  //       group.reduce((sum: number, item: any) => sum + item.main.temp_min, 0) /
-  //       group.length;
-  //     const averageTemp =
-  //       group.reduce((sum: number, item: any) => sum + item.main.temp, 0) /
-  //       group.length;
-  //     groupedData.push({ averageTemp, averageTempMax, averageTempMin, weather: });
-  //   }
-
-  //   return groupedData;
-  // }
 }
