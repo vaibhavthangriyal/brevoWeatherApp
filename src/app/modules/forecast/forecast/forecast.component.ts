@@ -3,6 +3,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { City } from 'src/app/models/city';
 import { CityService } from 'src/app/services/city.service';
+import { CustomToastService } from 'src/app/services/custom-toast.service';
 import { ForecastService } from 'src/app/services/forecast.service';
 
 @Component({
@@ -27,15 +28,10 @@ export class ForecastComponent implements OnInit {
   showLoader: boolean = true;
   selectedCity: any;
 
-  constructor(private cityService: CityService, private forecastService: ForecastService) {}
+  constructor(private customToastService: CustomToastService, private cityService: CityService, private forecastService: ForecastService) {}
 
   ngOnInit(): void {
     this.getAllCities();
-  }
-
-  enableToolTip() {
-    // const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-    // const tooltipList = [...tooltipTriggerList].map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
   }
 
   getAllCities() {
@@ -48,12 +44,20 @@ export class ForecastComponent implements OnInit {
           this.fetchData();
         }
       });
-    } catch (error) {}
+    } catch (error) {
+      this.customToastService.openToast('error', 'something went wrong');
+      throw error;
+    }
   }
 
   async changeCity(city: City) {
-    this.selectedCity = city;
-    this.foreCastData = await this.getForeCast();
+    try {
+      this.selectedCity = city;
+      this.foreCastData = await this.getForeCast();
+    } catch (error) {
+      this.customToastService.openToast('error', 'something went wrong');
+      throw error;
+    }
   }
 
   async getForeCast() {
@@ -73,7 +77,6 @@ export class ForecastComponent implements OnInit {
         if (newArray[diff - 1]) {
           let max = newArray[diff - 1] > element.main.temp_max ? element.main.temp_max : newArray[diff - 1].max;
           let min = newArray[diff - 1].min > element.main.temp_min ? newArray[diff - 1].min : element.main.temp_min;
-          console.log('MAX', max, min);
           newArray[diff - 1] = {
             max: newArray[diff - 1].max < element.main.temp_max ? element.main.temp_max : newArray[diff - 1].max,
             min: newArray[diff - 1].min > element.main.temp_min ? element.main.temp_min : newArray[diff - 1].min,
@@ -118,6 +121,7 @@ export class ForecastComponent implements OnInit {
       this.foreCastData = await this.getForeCast();
       this.showLoader = false;
     } catch (error) {
+      this.customToastService.openToast('error','something went wrong');
       throw error;
     }
   }
