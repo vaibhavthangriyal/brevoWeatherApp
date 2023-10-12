@@ -6,7 +6,7 @@
     Single app that gives forecast and weather condition of cities of France
     <br/>
     <br/>
-    <a href="https://github.com/virtualtechnoman/BrevoWeatherApp">View Demo</a>
+    <a href="https://stupendous-boba-5c27e9.netlify.app">View Demo</a>
     .
   </p>
 </p>
