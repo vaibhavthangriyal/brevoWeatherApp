@@ -1,1 +1,19 @@
-<p>custom-dropdown works!</p>
+<div class="d-flex cursor-pointer custom-dropdown-main" (click)="showDropdown = !showDropdown"  #customDropdown>
+  <label for="selected-ctiy"></label>
+  <input placeholder="selectedCity" [value]="selected.nm" id="selected-ctiy" type="text"
+    class="form-control rounded-0 cursor-pointer" readonly aria-describedby="basic-addon2">
+  <span class="input-group-text rounded-0" id="basic-addon2">&darr;</span>
+</div>
+
+<div class="custom-dropdown" [ngClass]="{'d-block':showDropdown,'d-none':!showDropdown}">
+  <div class="dropdown-menu-container">
+    <label for="searchQuery"></label>
+    <input placeholder="Search City" type="text" class="w-100 form-control-sm" id="searchQuery"
+      [(ngModel)]="searchQuery" />
+    <ul class="dropdown-menu" (scroll)="onScroll($event)">
+      <li *ngFor="let item of (options | search:{'nm' : searchQuery }); let i=index;" (click)="selectOption(i)"
+        class="custom-dropdown-item" [ngClass]="{'selected':item.selected}">{{ item.nm }}</li>
+    </ul>
+  </div>
+
+</div>

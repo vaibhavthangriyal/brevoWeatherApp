@@ -18,4 +18,9 @@ export class CityService {
       .get<City[]>(this.jsonFilePath)
       .pipe(map((data) => data.slice(startIndex, endIndex)));
   }
+
+
+  // getSpecific(id: number): Observable<any> {
+  //   return this.getData().pipe(map(data => data.find(item => item.id === id)));
+  // }
 }

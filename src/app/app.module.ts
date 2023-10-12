@@ -12,7 +12,6 @@ import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
-    CustomDropdownComponent,
     NotFoundComponent
   ],
   imports: [

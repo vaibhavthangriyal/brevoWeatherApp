@@ -2,11 +2,13 @@
   <!-- DROP-DOWN-CONTAINER -->
   <div class="row">
     <label class="text-white px-0 py-2 h6" for="city-drop-down">Sélectionner Vorte ville</label>
-    <select class="form-select" name="city-drop-down" id="city-drop-down" [(ngModel)]="selectedCity"
+    <app-custom-dropdown [options]="allCities" (reachedBottom)="getAllCities()"  (optionSelected)="changeCity($event)" [selected]="selectedCity"></app-custom-dropdown>
+    <!-- <select class="form-select" name="city-drop-down" id="city-drop-down" [(ngModel)]="selectedCity"
       (change)="fetchData()">
+      <input type="text">
       <option [ngValue]="city" *ngFor="let city of allCities; let i = index;" [selected]="city.id == selectedCity.id">
         {{city?.nm}}</option>
-    </select>
+    </select> -->
   </div>
 
   <!-- SPINNER -->
@@ -35,7 +37,7 @@
           <div class="forcast-icon">
             <i [class]="forecast.className"></i>
           </div>
-          <div class="forecast-max-temp">{{forecast.max  | number:'1.0-0' }}&deg;</div>
+          <div class="forecast-max-temp">{{forecast.max | number:'1.0-0' }}&deg;</div>
           <div class="forecast-min-temp">{{forecast.min | number:'1.0-0'}}&deg;</div>
         </div>
       </div>

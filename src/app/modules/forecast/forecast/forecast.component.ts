@@ -27,7 +27,7 @@ export class ForecastComponent implements OnInit {
   showLoader: boolean = true;
   selectedCity: any;
 
-  constructor(private cityService: CityService, private forecastService: ForecastService) { }
+  constructor(private cityService: CityService, private forecastService: ForecastService) {}
 
   ngOnInit(): void {
     this.getAllCities();
@@ -48,14 +48,18 @@ export class ForecastComponent implements OnInit {
           this.fetchData();
         }
       });
-    } catch (error) { }
+    } catch (error) {}
   }
 
-  async getForCast() {
+  async changeCity(city: City) {
+    this.selectedCity = city;
+    this.foreCastData = await this.getForeCast();
+  }
+
+  async getForeCast() {
     try {
       const allForecast = await this.forecastService.getForecastTillDate(this.selectedCity.lat, this.selectedCity.lon).toPromise();
 
-      console.log('all', allForecast);
       const lastElemet = allForecast.list[allForecast.list.length - 1];
       const firstDate = new Date().getDate() + 1;
       const lastDate = new Date(lastElemet.dt * 1000).getDate();
@@ -67,12 +71,12 @@ export class ForecastComponent implements OnInit {
         const newDate = new Date(element.dt * 1000).getDate();
         const diff = newDate - currentDate;
         if (newArray[diff - 1]) {
-          let max = (newArray[diff - 1] > element.main.temp_max) ? element.main.temp_max : newArray[diff - 1].max;
-          let min = (newArray[diff - 1].min > element.main.temp_min) ? newArray[diff - 1].min : element.main.temp_min;
-          console.log("MAX", max, min)
+          let max = newArray[diff - 1] > element.main.temp_max ? element.main.temp_max : newArray[diff - 1].max;
+          let min = newArray[diff - 1].min > element.main.temp_min ? newArray[diff - 1].min : element.main.temp_min;
+          console.log('MAX', max, min);
           newArray[diff - 1] = {
-            max: (newArray[diff - 1].max < element.main.temp_max) ? element.main.temp_max : newArray[diff - 1].max,
-            min: (newArray[diff - 1].min > element.main.temp_min) ? element.main.temp_min : newArray[diff - 1].min,
+            max: newArray[diff - 1].max < element.main.temp_max ? element.main.temp_max : newArray[diff - 1].max,
+            min: newArray[diff - 1].min > element.main.temp_min ? element.main.temp_min : newArray[diff - 1].min,
             date: new Date(element.dt * 1000),
             weather: element.weather[0].id,
             className: `wi wi-icon-${element.weather[0].id}`,
@@ -90,19 +94,6 @@ export class ForecastComponent implements OnInit {
             description: element.weather[0].description,
           };
         }
-
-        // if (diff > 0) {
-        //   switch (diff - 1) {
-        //     case 1:
-        //       break;
-        //     case 2:
-        //       break;
-        //     case 3:
-        //       break;
-        //     default:
-        //       break;
-        //   }
-        // }
       }
       return newArray;
     } catch (error) {
@@ -124,9 +115,7 @@ export class ForecastComponent implements OnInit {
     try {
       this.showLoader = true;
       this.currentCondition = await this.getCurrentConditions();
-      this.foreCastData = await this.getForCast();
-      console.log('CURRENT', this.currentCondition);
-      console.log('FORECAST', this.foreCastData);
+      this.foreCastData = await this.getForeCast();
       this.showLoader = false;
     } catch (error) {
       throw error;
