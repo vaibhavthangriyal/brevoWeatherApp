@@ -1,6 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, HostListener, OnInit } from '@angular/core';
-import * as moment from 'moment';
 import { City } from 'src/app/models/city';
 import { CityService } from 'src/app/services/city.service';
 import { CustomToastService } from 'src/app/services/custom-toast.service';
@@ -12,14 +11,6 @@ import { ForecastService } from 'src/app/services/forecast.service';
   styleUrls: ['./forecast.component.scss'],
 })
 export class ForecastComponent implements OnInit {
-  @HostListener('window:scroll', [])
-  onScroll(): void {
-    // Check if the user has scrolled to the bottom of the page
-    if (window.innerHeight + window.scrollY >= document.body.scrollHeight) {
-      this.getAllCities(); // If yes, load more city data
-    }
-  }
-
   allCities: City[] = []; // Initialize an array to store city data
   currentPage = 1; // Initialize the current page for pagination
   currentCondition: any; // Initialize the current weather condition
@@ -29,7 +20,7 @@ export class ForecastComponent implements OnInit {
   showLoader: boolean = true; // A flag to show a loader while data is being fetched
   selectedCity: any; // Initialize the selected city
 
-  constructor(private customToastService: CustomToastService, private cityService: CityService, private forecastService: ForecastService) {}
+  constructor(private customToastService: CustomToastService, private cityService: CityService, private forecastService: ForecastService) { }
 
   ngOnInit(): void {
     this.getAllCities();
@@ -50,19 +41,18 @@ export class ForecastComponent implements OnInit {
       });
     } catch (error) {
       // Handle and display an error if fetching data fails
-      this.customToastService.openToast('error', 'something went wrong');
       throw error;
     }
   }
 
   async changeCity(city: City) {
     try {
+      console.log(city)
       // Change the selected city and fetch its data
       this.selectedCity = city;
       this.foreCastData = await this.getForeCast();
     } catch (error) {
       // Handle and display an error if fetching data fails
-      this.customToastService.openToast('error', 'something went wrong');
       throw error;
     }
   }
@@ -73,16 +63,16 @@ export class ForecastComponent implements OnInit {
       const allForecast = await this.forecastService.getForecastTillDate(this.selectedCity.lat, this.selectedCity.lon).toPromise();
 
       const lastElemet = allForecast.list[allForecast.list.length - 1]; //Get last date from fetched data
-      const firstDate = moment().add(1, 'day'); //
-      const lastDate = moment(lastElemet.dt * 1000);
-
-      const newArray = new Array(lastDate.diff(firstDate, 'days') + 1);
+      const firstDate = new Date().setDate(new Date().getDate() + 1); //
+      const lastDate = lastElemet.dt * 1000;
+      const totalDays = Math.ceil(((lastDate - firstDate) / (1000 * 60 * 60 * 24)));
+      const newArray = new Array(totalDays);
       for (let index = 0; index < allForecast.list.length; index++) {
         const element = allForecast.list[index];
-        const currentDate = moment();
-        const newDate = moment(element.dt * 1000);
+        const currentDate = new Date().valueOf();
+        const newDate = element.dt * 1000;
+        const diff = Math.ceil((newDate - currentDate) / (1000 * 60 * 60 * 24))
 
-        const diff = newDate.diff(currentDate, 'days');
         if (newArray[diff - 1]) {
           newArray[diff - 1] = {
             max: newArray[diff - 1].max < element.main.temp_max ? element.main.temp_max : newArray[diff - 1].max,
@@ -129,7 +119,6 @@ export class ForecastComponent implements OnInit {
       this.foreCastData = await this.getForeCast();
       this.showLoader = false;
     } catch (error) {
-      this.customToastService.openToast('error', 'something went wrong');
       throw error;
     }
   }

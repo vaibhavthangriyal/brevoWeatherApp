@@ -1,30 +1,62 @@
 .form-control {
-  width: 100%;
-  padding: 10px;
+  width: inherit;
+  padding: 0.5rem 0.5rem;
+  width: 95%;
   border: 1px solid #ced4da;
   border-radius: 4px;
   background-color: white;
 }
-.custom-dropdown-main:hover {
-  border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+
+.custom-dropdown-main {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+
+  :hover {
+    border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+  }
+
 }
+
+ul {
+  list-style: none;
+  /* Removes the bullets (dots) */
+}
+
 .custom-dropdown {
   width: 100%;
   position: relative;
+
+  .title-container {
+    display: flex;
+    justify-content: space-between;
+
+    .title {
+      width: 100%;
+      background: white;
+      padding: 0.75rem;
+      border-radius: 0.25rem 0 0 0.25rem;
+    }
+  }
+
   .dropdown-menu-container {
-    display: block;
+    display: none;
     position: absolute;
     width: 100%;
+    max-height: 100px;
+
     .dropdown-menu {
+      background-color: white;
       display: block;
       border: 1px solid #ced4da;
       border-top: none;
       border-radius: 0 0 4px 4px;
       position: absolute;
-      width: 100%;
+      width: -webkit-fill-available;
       z-index: 1000;
       max-height: 200px;
       overflow-y: auto;
+      margin: auto;
     }
 
     .dropdown-menu li {
@@ -34,9 +66,11 @@
     }
   }
 }
+
 .custom-dropdown-item:hover {
-  background-color: #0d6efd;
+  background-color: #ced5e0;
 }
+
 .selected {
   background-color: #0d6efd;
 }

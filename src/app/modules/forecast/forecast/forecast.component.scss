@@ -1,24 +1,69 @@
-.city-name-container {
+.container {
+  width: 50%;
+  margin: auto;
+  padding: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.5rem;
+  flex-direction: column;
+
+  .dropdown-container {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    width: 100%;
+
+    .label {
+      color: #FFFFFF;
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+      padding: 0.5 0 0.5 0rem;
+    }
+  }
+
+  .forecast-main-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+
+
+    .forecast-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+  }
+}
+
+.city-name-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0;
   background-color: #7858bb;
   color: white;
 }
 
 .current-city-forecast {
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: 1rem;
+  padding: 1rem 0;
   color: white;
 
   .current-city-forecast-icon {
     padding: 0.5rem 1rem;
     font-size: 5rem;
   }
+
   .current-city-forecast-temp {
     padding: 0.5rem 1rem;
     font-size: 3rem;
@@ -32,49 +77,61 @@
   flex-direction: column;
   color: whitesmoke;
   flex: 1;
+
   .day {
     background-color: #7858bb;
     width: 100%;
     text-align: center;
+    padding: 0.25rem;
   }
+
   .forcast-icon {
-    font-size: 2rem;
+    font-size: 3rem;
+    padding: 0.5rem;
   }
+
   .forecast-max-temp {
     padding: 0.25rem;
   }
+
   .forecast-min-temp {
     padding: 0.25rem;
   }
 }
 
-@media (min-width: 576px) {
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-// Medium devices (tablets, 768px and up)
-@media (min-width: 768px) {
+.w-100 {
+  width: 100%;
+}
+
+/* Mobile Devices */
+@media screen and (max-width: 767px) {
+  .container {
+    width: 80%;
+  }
+}
+
+/* Tablets */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .container {
+    width: 75%;
+  }
+}
+
+/* Desktops */
+@media screen and (min-width: 1024px) and (max-width: 1439px) {
   .container {
     width: 50%;
   }
 }
 
-// Large devices (desktops, 992px and up)
-@media (min-width: 992px) {
-  .container {
-    width: 45%;
-  }
-}
-
-// X-Large devices (large desktops, 1200px and up)
-@media (min-width: 1200px) {
-  .container {
-    width: 40%;
-  }
-}
-
-// XX-Large devices (larger desktops, 1400px and up)
-@media (min-width: 1400px) {
-  .container {
-    width: 50%;
-  }
+/* TVs (Large Screens) */
+@media screen and (min-width: 1440px) {
+  /* Your CSS rules for TVs go here */
 }
