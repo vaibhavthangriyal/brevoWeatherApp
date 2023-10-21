@@ -79,21 +79,37 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 ## Internal Workings
 
 We have 
-3 Services
-  1. Forecast service
-    1.  getForecastTillDate(lat: number, lon: number) : Used to get forecast of next 5 days of a city based on city's lat log.
-    2.  getCurrentCondition(lat: number, lon: number) :  Used to get forecast of current day based on city's lat long
-  2. City Service
-    1.  getAllCities(page: number, pageSize: number) : Used to fetch paginated list of cities.
-    2.  getFilteredData(searchString: string, page: number, pageSize: number) : Used to fetch paginated list of cities filtered my name that contains search string.
-  3. Custom Toast Service.
-    1.  openToast(toastMessage: string, toastType: 'error' | 'warning' | 'success' = 'success') : Used to open a custom toast with message and custom style.
-2 individual components
-  1. Custom Dropdown
-  2. Toast component
-  3. Notfound component.
-1 Module
-  1. Forecast Module
+### 3 Services
+  #### Forecast service
+    getForecastTillDate(lat: number, lon: number) : Used to get forecast of next 5 days of a city based on city's lat log.
+    getCurrentCondition(lat: number, lon: number) :  Used to get forecast of current day based on city's lat long
+  #### City Service
+    getAllCities(page: number, pageSize: number) : Used to fetch paginated list of cities.
+    getFilteredData(searchString: string, page: number, pageSize: number) : Used to fetch paginated list of cities filtered my name that contains search string.
+  #### Custom Toast Service.   
+    openToast(toastMessage: string, toastType: 'error' | 'warning' | 'success' = 'success') : Used to open a custom toast with message and custom style.
+### Individual components
+  #### Custom Dropdown
+    onClick($event) : This event is used to check if we have clicked inside of dropdown component, if not then hide dropdown
+    onScroll() : This event is used to check if we have reached bottom of dropdown, if yes, then emit event to parent component.
+    selectOption() : This event is emites, selected option from dropdown to parent component.
+    search() : This event emits, search string to parent component.
+    highlightSearchString() : This method, highlights the searched string in options list.
+  #### Toast component
+    
+  #### Notfound component.
+    Shows 404 not found page, when user goes to unlisted url.
+
+### Module
+  #### Forecast Module
+  ##### Forecast component
+      getAllCities() : 
+      getFilteredCities(searchString) : 
+      changeCity(city) : 
+      getForeCast() : 
+      getCurrentConditions() :
+      fetchData() :
+      getMoreCities() :
 
 ## Authors
 
