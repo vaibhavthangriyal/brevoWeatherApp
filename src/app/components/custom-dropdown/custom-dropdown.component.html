@@ -5,7 +5,7 @@
   </label>
   <div id="dropdown-menu-container" class="dropdown-menu-container" >
     <label for="searchQuery"></label>
-    <input placeholder="Search City" type="text" class="form-control focusable-element" id="searchQuery" [(ngModel)]="searchQuery" (ngModelChange)="search()"/>
+    <input placeholder="Search City" type="text" class="form-control custom-dropdown-search-input focusable-element" id="searchQuery" [(ngModel)]="searchQuery" (ngModelChange)="search()"/>
     <ul class="dropdown-menu" (scroll)="onScroll($event)">
       <li *ngFor="let item of (options | search:{'nm' : searchQuery }); let i=index;" (click)="selectOption(i)"
         class="custom-dropdown-item" [ngClass]="{'selected':item?.selected}">{{ item.nm }}</li>

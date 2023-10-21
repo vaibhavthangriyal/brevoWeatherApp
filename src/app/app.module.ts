@@ -9,11 +9,13 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CustomToastService } from './services/custom-toast.service';
+import { ToastComponent } from './components/toast/toast.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule,

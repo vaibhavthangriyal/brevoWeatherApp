@@ -55,7 +55,6 @@ export class ForecastComponent implements OnInit {
       this.searchQuery = searchQuery;
       // Fetch a batch of city data from the service
       this.cityService.getFilteredData(searchQuery, this.filteredPagination.currentPage, this.filteredPagination.pageSize).subscribe((res) => {
-        console.log(res)
         this.allCities = [...this.allCities, ...res]; // Append the new data to the existing city data
         this.filteredPagination.currentPage++;
         this.allCities = this.allCities.sort((a: any, b: any) => b.nm - a.nm)
