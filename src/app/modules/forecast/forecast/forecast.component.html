@@ -3,7 +3,7 @@
   <div class="dropdown-container">
     <label class="label" for="city-drop-down"><b>Sélectionner Vorte ville</b></label>
     <app-custom-dropdown [options]="allCities" (reachedBottom)="getAllCities()" (optionSelected)="changeCity($event)"
-      [selected]="selectedCity"></app-custom-dropdown>
+      [selected]="selectedCity" (filteredData)="getFilteredCities($event)"></app-custom-dropdown>
   </div>
 
   <!-- SPINNER -->
@@ -15,13 +15,13 @@
 
   <div class="forecast-main-container">
     <div class="city-name-container">
-      <span class="city-name"><b>{{selectedCity.nm | uppercase}}</b></span>
+      <span class="city-name"><b>{{selectedCity?.nm | uppercase}}</b></span>
     </div>
 
     <!-- CURRENT CONDITION DIV -->
     <div class="current-city-forecast">
-      <i class=" current-city-forecast-icon" [class]="currentCondition.className"></i>
-      <div class="current-city-forecast-temp">{{currentCondition.main.temp | number:'1.0-0'}}&deg;</div>
+      <i class=" current-city-forecast-icon" [class]="currentCondition?.className"></i>
+      <div class="current-city-forecast-temp">{{currentCondition?.main.temp | number:'1.0-0'}}&deg;</div>
     </div>
 
 

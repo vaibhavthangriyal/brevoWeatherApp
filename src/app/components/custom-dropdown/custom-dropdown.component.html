@@ -1,14 +1,14 @@
 <div class="custom-dropdown">
   <label class="title-container focusable-element" tabindex="0">
-    <input id="title-container" class="title custom-dropdown focusable-element" type="search" name=""  readonly value="{{selected.nm | titlecase}}">
+    <input id="title-container" class="title custom-dropdown focusable-element" type="search" name=""  readonly value="{{selected?.nm | titlecase}}">
     <button class="chevron-down custom-dropdown-main focusable-element">&#709;</button>
   </label>
-  <div id="dropdown-menu-container " class="dropdown-menu-container" >
+  <div id="dropdown-menu-container" class="dropdown-menu-container" >
     <label for="searchQuery"></label>
-    <input placeholder="Search City" type="text" class="form-control focusable-element" id="searchQuery" [(ngModel)]="searchQuery" />
+    <input placeholder="Search City" type="text" class="form-control focusable-element" id="searchQuery" [(ngModel)]="searchQuery" (ngModelChange)="search()"/>
     <ul class="dropdown-menu" (scroll)="onScroll($event)">
       <li *ngFor="let item of (options | search:{'nm' : searchQuery }); let i=index;" (click)="selectOption(i)"
-        class="custom-dropdown-item" [ngClass]="{'selected':item.selected}">{{ item.nm }}</li>
+        class="custom-dropdown-item" [ngClass]="{'selected':item?.selected}">{{ item.nm }}</li>
     </ul>
   </div>
 

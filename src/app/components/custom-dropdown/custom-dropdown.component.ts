@@ -11,6 +11,7 @@ export class CustomDropdownComponent implements AfterViewInit {
 
   @Output() reachedBottom: EventEmitter<any> = new EventEmitter<any>();
   @Output() optionSelected: EventEmitter<any> = new EventEmitter<any>();
+  @Output() filteredData: EventEmitter<any> = new EventEmitter<any>();
 
 
   searchQuery = '';
@@ -19,21 +20,20 @@ export class CustomDropdownComponent implements AfterViewInit {
   displayedItems = 10; // Number of initially displayed items
 
   ngAfterViewInit(): void {
-    const focusableElements = document.querySelectorAll('.focusable-element') ;
+    const focusableElements = document.querySelectorAll('.focusable-element');
     const dropdown = document.getElementById('dropdown-menu-container') as HTMLElement;
-    console.log(dropdown)
     focusableElements.forEach(element => {
       element.addEventListener('focus', () => {
         const styles = window.getComputedStyle(dropdown)
         if (styles.display == 'none') dropdown.style.display = 'block'
-        else dropdown.style.display = 'none'
+        // else dropdown.style.display = 'none'
       });
 
-      element.addEventListener('blur', () => {
-        setTimeout(() => {
-          dropdown.style.display = 'none'
-        }, 500);
-      });
+      // element.addEventListener('blur', () => {
+      //   setTimeout(() => {
+      //     dropdown.style.display = 'none'
+      //   }, 500);
+      // });
     })
   }
 
@@ -51,5 +51,13 @@ export class CustomDropdownComponent implements AfterViewInit {
     console.log("index", index)
     this.options[index].selected = true;
     this.optionSelected.next(this.options[index]);
+  }
+
+  search() {
+    try {
+      this.filteredData.next(this.searchQuery);
+    } catch (error) {
+      
+    }
   }
 }

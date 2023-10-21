@@ -14,6 +14,10 @@ export class ForecastComponent implements OnInit {
   allCities: City[] = []; // Initialize an array to store city data
   currentPage = 1; // Initialize the current page for pagination
   currentCondition: any; // Initialize the current weather condition
+  filteredPagination = {
+    pageSize: 50,
+    currentPage: 1
+  };
   foreCastData: any = []; // Initialize an array to store forecast data
   foreCastDays: number = 3; // Define the number of forecast days
   pageSize = 50; // Define the number of cities to fetch per page
@@ -45,9 +49,23 @@ export class ForecastComponent implements OnInit {
     }
   }
 
+  getFilteredCities(searchQuery: any) {
+    try {
+      console.log("event", searchQuery)
+      // Fetch a batch of city data from the service
+      this.cityService.getFilteredData(searchQuery).subscribe((res) => {
+        console.log("RES", res);
+        // Append the new data to the existing city data
+        this.allCities = [...this.allCities, ...res];
+        this.currentPage++;
+      });
+    } catch (error) {
+
+    }
+  }
+
   async changeCity(city: City) {
     try {
-      console.log(city)
       // Change the selected city and fetch its data
       this.selectedCity = city;
       this.foreCastData = await this.getForeCast();

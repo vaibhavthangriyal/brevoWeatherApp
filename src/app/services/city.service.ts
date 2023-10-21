@@ -9,7 +9,7 @@ import { City } from '../models/city';
 export class CityService {
   jsonFilePath = '../../assets/cities-fr.json';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAllCities(page: number, pageSize: number): Observable<City[]> {
     const startIndex = (page - 1) * pageSize;
@@ -20,7 +20,7 @@ export class CityService {
   }
 
 
-  // getSpecific(id: number): Observable<any> {
-  //   return this.getData().pipe(map(data => data.find(item => item.id === id)));
-  // }
+  getFilteredData(searchString: string): Observable<any> {
+    return this.http.get<City[]>(this.jsonFilePath).pipe(map(items => items.filter(item => item.nm.includes(searchString))))
+  }
 }
