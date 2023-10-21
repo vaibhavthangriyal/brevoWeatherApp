@@ -3,7 +3,7 @@
     <input id="title-container" class="title custom-dropdown focusable-element" type="search" name=""  readonly value="{{selected?.nm | titlecase}}">
     <button class="chevron-down custom-dropdown-main focusable-element">&#709;</button>
   </label>
-  <div id="dropdown-menu-container" class="dropdown-menu-container" >
+  <div id="dropdown-menu-container" class="dropdown-menu-container d-none" >
     <label for="searchQuery"></label>
     <input placeholder="Search City" type="text" class="form-control custom-dropdown-search-input focusable-element" id="searchQuery" [(ngModel)]="searchQuery" (ngModelChange)="search()"/>
     <ul class="dropdown-menu" (scroll)="onScroll($event)">

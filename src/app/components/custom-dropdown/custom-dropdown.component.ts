@@ -20,22 +20,17 @@ export class CustomDropdownComponent implements AfterViewInit {
   showDropdown = false;
   displayedItems = 10; // Number of initially displayed items
 
-  ngAfterViewInit(): void {
-    const focusableElements = document.querySelectorAll('.focusable-element');
-    const dropdown = document.getElementById('dropdown-menu-container') as HTMLElement;
-    focusableElements.forEach(element => {
-      element.addEventListener('focus', () => {
-        const styles = window.getComputedStyle(dropdown)
-        if (styles.display == 'none') dropdown.style.display = 'block'
-        // else dropdown.style.display = 'none'
-      });
 
-      // element.addEventListener('blur', () => {
-      //   setTimeout(() => {
-      //     dropdown.style.display = 'none'
-      //   }, 500);
-      // });
-    })
+  @HostListener('document:click', ['$event'])
+  onClick(event: MouseEvent) {
+    const clickedElement = event.target as HTMLElement;
+    const allClasses = clickedElement.classList;
+    const dropdown = document.getElementById('dropdown-menu-container');
+    if (allClasses.contains('focusable-element')) {
+      dropdown?.classList.remove('d-none');
+    } else dropdown?.classList.add('d-none');;
+  }
+  ngAfterViewInit(): void {
   }
 
   onScroll(event: any) {
