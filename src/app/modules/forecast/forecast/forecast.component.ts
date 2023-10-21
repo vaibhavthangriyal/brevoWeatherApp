@@ -25,12 +25,16 @@ export class ForecastComponent implements OnInit {
   selectedCity: any; // Initialize the selected city
   searchQuery: string = '';
 
-  constructor(private customToastService: CustomToastService, private cityService: CityService, private forecastService: ForecastService) { }
+  constructor(private cityService: CityService, private forecastService: ForecastService) { }
 
   ngOnInit(): void {
     this.getAllCities();
   }
 
+  /**
+   * The function fetches a batch of city data from a service, appends it to the existing city data,
+   * sets the first city as the selected one if no city is selected, and fetches its data.
+   */
   getAllCities() {
     try {
       // Fetch a batch of city data from the service
@@ -50,6 +54,13 @@ export class ForecastComponent implements OnInit {
     }
   }
 
+  /**
+   * The function `getFilteredCities` fetches a batch of city data from a service based on a search
+   * query and appends it to the existing city data.
+   * @param {any} searchQuery - The search query is a parameter that represents the user's input for
+   * filtering the cities. It can be any type of data, such as a string or an object, depending on how
+   * the filtering functionality is implemented in the city service.
+   */
   getFilteredCities(searchQuery: any) {
     try {
       this.searchQuery = searchQuery;
@@ -64,6 +75,12 @@ export class ForecastComponent implements OnInit {
     }
   }
 
+  /**
+   * The function changes the selected city and fetches its forecast data, handling and displaying an
+   * error if fetching data fails.
+   * @param {City} city - The "city" parameter is an object of type "City" that represents the city that
+   * the user wants to change to.
+   */
   async changeCity(city: City) {
     try {
       // Change the selected city and fetch its data
@@ -75,6 +92,14 @@ export class ForecastComponent implements OnInit {
     }
   }
 
+  /* The `getForeCast()` function is an asynchronous function that fetches the forecast data for the
+  selected city. It makes an API call to the `forecastService` to get the forecast data and then
+  processes the data to create a new array with the maximum and minimum temperatures for each day. The
+  function calculates the number of days between the current date and the last date in the forecast
+  data, creates an array with the length equal to the number of days, and populates the array with the
+  maximum and minimum temperatures for each day. The function also includes other properties such as
+  the date, weather condition, weather icon class name, count, and description for each day. Finally,
+  the function returns the new array with the forecast data. */
   async getForeCast() {
     try {
       // Fetch the forecast data for the selected city
@@ -120,6 +145,13 @@ export class ForecastComponent implements OnInit {
     }
   }
 
+  /**
+   * The function `getCurrentConditions` is an asynchronous function that retrieves the current weather
+   * conditions for a selected city using the `forecastService` and returns the result.
+   * @returns the result of the API call to get the current weather conditions for the selected city. The
+   * result is an object that includes the weather information and a className property that is set based
+   * on the weather condition.
+   */
   async getCurrentConditions() {
     try {
       let res: any = await this.forecastService.getCurrentCondition(this.selectedCity.lat, this.selectedCity.lon).toPromise();
@@ -130,6 +162,10 @@ export class ForecastComponent implements OnInit {
     }
   }
 
+  /**
+   * The above function is an asynchronous function that fetches current conditions and forecast data,
+   * while also handling errors and updating the loader status.
+   */
   async fetchData() {
     try {
       this.showLoader = true;
@@ -141,6 +177,11 @@ export class ForecastComponent implements OnInit {
     }
   }
 
+  /**
+   * The function `getMoreCities` sorts the `allCities` array in descending order based on the `nm`
+   * property, and then either filters the cities based on a search query or retrieves all cities if no
+   * search query is provided.
+   */
   async getMoreCities() {
     try {
       this.allCities = this.allCities.sort((a: any, b: any) => b.nm - a.nm)
