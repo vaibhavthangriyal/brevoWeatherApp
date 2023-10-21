@@ -70,14 +70,22 @@ npm install
 npm start
 ```
 
-## Usage
+## Approach
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+  ### Default Flow
+  #### App loads -> FeatureModule Lazy Loaded -> Component is Loaded -> Api to fetch cities is called -> First object is selected as selectedCity -> getCurrentConditions() and getForeCast() is called to fetch forecast
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+  ### City is changed from drop down
+  #### fetchData() is called to call both APIs for selected city.
+
+  ### Dropdown is scrolled to bottom
+  #### Once dropdown is scrolled to bottom, getAllCities() is called with next page, that fetches next 50 cities
+
+  ### Text is entered in search field.
+  #### getFilteredData() is called with next page (filtered search), that fetches next 50 cities filtered by name that includes the search string.
+
 
 ## Internal Workings
-
 We have 
 ### 3 Services
   #### Forecast service
@@ -103,13 +111,13 @@ We have
 ### Module
   #### Forecast Module
   ##### Forecast component
-      getAllCities() : 
-      getFilteredCities(searchString) : 
-      changeCity(city) : 
-      getForeCast() : 
-      getCurrentConditions() :
-      fetchData() :
-      getMoreCities() :
+      getAllCities() : Call api to get all cities, in paginated form.
+      getFilteredCities(searchString) : call api to fetch cities based on search string.
+      changeCity(city) : call api and fetch forecast based on selected city.
+      getForeCast() : Call api to get forecast of next 5 days
+      getCurrentConditions() :  Call api to get same day forecast
+      fetchData() : Get same day forecast as well as forecast of next 3 days.
+      getMoreCities() : Calls api to get cities from next pagination page, based on search string, if search string is present, then fetch filtered cities else fetch all cities
 
 ## Authors
 
