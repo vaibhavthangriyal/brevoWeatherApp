@@ -21,17 +21,19 @@
   * [Prerequisites](#prerequisites)
   * [Installation](#installation)
 * [Usage](#usage)
-* [Contributing](#contributing)
+* [Internal working](#internal-workings)
 * [Authors](#authors)
 * [Acknowledgements](#acknowledgements)
 
 ## About The Project
 
-Angular, Bootstrap,
+The "Brevo French Weather Forecast" app is a user-friendly, Angular-based application that provides real-time weather information for various cities across France. With a simple and intuitive user interface, this app allows users to effortlessly access accurate weather data for over 5000 locations.
+### Special Features
+Custom Dropdown with :: Pagination, Infinite scroll, Typeahead with highlight
 
 ## Built With
 
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+This application is build on Angular 16. With ZERO external libraries.
 
 ## Getting Started
 
@@ -42,7 +44,7 @@ To get a local copy up and running follow these simple example steps.
 
 This is an example of how to list things you need to use the software and how to install them.
 
-* npm
+* npm version 16 and above
 
 ```sh
 npm install npm@latest -g
@@ -50,24 +52,22 @@ npm install npm@latest -g
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-
-2. Clone the repo
+1. Clone the repo
 
 ```sh
-git clone [https://github.com/your_username_/Project-Name.git](https://github.com/virtualtechnoman/brevoWeatherApp.git
+git clone https://github.com/virtualtechnoman/brevoWeatherApp.git
 ```
 
-3. Install NPM packages
+2. Install NPM packages
 
 ```sh
 npm install
 ```
 
-4. Enter your API in `config.js`
+3. Start application
 
 ```JS
-const API_KEY = 'ENTER YOUR API';
+npm start
 ```
 
 ## Usage
@@ -76,6 +76,24 @@ Use this space to show useful examples of how a project can be used. Additional 
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
+## Internal Workings
+
+We have 
+3 Services
+  1. Forecast service
+    1.  getForecastTillDate(lat: number, lon: number) : Used to get forecast of next 5 days of a city based on city's lat log.
+    2.  getCurrentCondition(lat: number, lon: number) :  Used to get forecast of current day based on city's lat long
+  2. City Service
+    1.  getAllCities(page: number, pageSize: number) : Used to fetch paginated list of cities.
+    2.  getFilteredData(searchString: string, page: number, pageSize: number) : Used to fetch paginated list of cities filtered my name that contains search string.
+  3. Custom Toast Service.
+    1.  openToast(toastMessage: string, toastType: 'error' | 'warning' | 'success' = 'success') : Used to open a custom toast with message and custom style.
+2 individual components
+  1. Custom Dropdown
+  2. Toast component
+  3. Notfound component.
+1 Module
+  1. Forecast Module
 
 ## Authors
 
