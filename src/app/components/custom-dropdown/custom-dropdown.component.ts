@@ -14,6 +14,7 @@ export class CustomDropdownComponent implements AfterViewInit {
   @Output() filteredData: EventEmitter<any> = new EventEmitter<any>();
 
 
+  isTypeAhead: boolean = false;
   searchQuery = '';
   filteredItems: string[] = [];
   showDropdown = false;
@@ -55,9 +56,31 @@ export class CustomDropdownComponent implements AfterViewInit {
 
   search() {
     try {
+      console.log(this.searchQuery)
       this.filteredData.next(this.searchQuery);
+      this.highlightSearchString();
     } catch (error) {
-      
+
     }
   }
+
+  highlightSearchString() {
+    try {
+      const allLi = document.querySelectorAll('li')
+      allLi.forEach((li) => {
+        li.innerHTML = li.innerHTML.replace('<mark>', '');
+        li.innerHTML = li.innerHTML.replace('</mark>', '');
+        if ((li.textContent)?.toLocaleLowerCase()?.includes(this.searchQuery.toLocaleLowerCase())) {
+          console.log(li.textContent, li.innerHTML)
+          li.innerHTML = li.innerHTML.replace(this.searchQuery, "<mark>" + this.searchQuery + "</mark>");
+        }
+      })
+      // console.log(list.innerHTML)
+      // const marked = list.innerHTML.replaceAll(this.searchQuery, "<mark>" + this.searchQuery + "</mark>");
+      // list.innerHTML = marked;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }

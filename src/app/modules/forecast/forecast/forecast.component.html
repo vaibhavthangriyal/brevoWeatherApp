@@ -2,18 +2,16 @@
   <!-- DROP-DOWN-CONTAINER -->
   <div class="dropdown-container">
     <label class="label" for="city-drop-down"><b>Sélectionner Vorte ville</b></label>
-    <app-custom-dropdown [options]="allCities" (reachedBottom)="getAllCities()" (optionSelected)="changeCity($event)"
+    <app-custom-dropdown [options]="allCities" (reachedBottom)="getMoreCities()" (optionSelected)="changeCity($event)"
       [selected]="selectedCity" (filteredData)="getFilteredCities($event)"></app-custom-dropdown>
   </div>
 
   <!-- SPINNER -->
-  <div class="w-100 d-flex justify-content-center p-4 text-white" *ngIf="showLoader">
-    <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
+  <div class="spinner-container" *ngIf="showLoader">
+    <img class="spinner" src="https://i.gifer.com/ZKZg.gif" alt="loading-spinner">
   </div>
 
-  <div class="forecast-main-container">
+  <div class="forecast-main-container" *ngIf="!showLoader">
     <div class="city-name-container">
       <span class="city-name"><b>{{selectedCity?.nm | uppercase}}</b></span>
     </div>

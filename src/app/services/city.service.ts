@@ -20,7 +20,14 @@ export class CityService {
   }
 
 
-  getFilteredData(searchString: string): Observable<any> {
-    return this.http.get<City[]>(this.jsonFilePath).pipe(map(items => items.filter(item => item.nm.includes(searchString))))
+  getFilteredData(searchString: string, page: number, pageSize: number): Observable<any> {
+    return this.http.get<City[]>(this.jsonFilePath).pipe(
+      map(items => items.filter(item => item.nm.includes(searchString))),
+      map(filteredItems => {
+        const startIndex = (page - 1) * pageSize;
+        const endIndex = startIndex + pageSize;
+        return filteredItems.slice(startIndex, endIndex);
+      })
+    )
   }
 }

@@ -23,6 +23,7 @@ export class ForecastComponent implements OnInit {
   pageSize = 50; // Define the number of cities to fetch per page
   showLoader: boolean = true; // A flag to show a loader while data is being fetched
   selectedCity: any; // Initialize the selected city
+  searchQuery: string = '';
 
   constructor(private customToastService: CustomToastService, private cityService: CityService, private forecastService: ForecastService) { }
 
@@ -51,13 +52,13 @@ export class ForecastComponent implements OnInit {
 
   getFilteredCities(searchQuery: any) {
     try {
-      console.log("event", searchQuery)
+      this.searchQuery = searchQuery;
       // Fetch a batch of city data from the service
-      this.cityService.getFilteredData(searchQuery).subscribe((res) => {
-        console.log("RES", res);
-        // Append the new data to the existing city data
-        this.allCities = [...this.allCities, ...res];
-        this.currentPage++;
+      this.cityService.getFilteredData(searchQuery, this.filteredPagination.currentPage, this.filteredPagination.pageSize).subscribe((res) => {
+        console.log(res)
+        this.allCities = [...this.allCities, ...res]; // Append the new data to the existing city data
+        this.filteredPagination.currentPage++;
+        this.allCities = this.allCities.sort((a: any, b: any) => b.nm - a.nm)
       });
     } catch (error) {
 
@@ -137,6 +138,17 @@ export class ForecastComponent implements OnInit {
       this.foreCastData = await this.getForeCast();
       this.showLoader = false;
     } catch (error) {
+      throw error;
+    }
+  }
+
+  async getMoreCities() {
+    try {
+      this.allCities = this.allCities.sort((a: any, b: any) => b.nm - a.nm)
+      if (this.searchQuery.length) this.getFilteredCities(this.searchQuery)
+      else this.getAllCities();
+    } catch (error) {
+      console.log(error)
       throw error;
     }
   }
